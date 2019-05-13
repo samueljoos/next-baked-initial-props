@@ -1,0 +1,5 @@
+lib
+examples/multilanguage-domains/.next
+examples/multilanguage/.next
+.coveralls.yml
+coverage
