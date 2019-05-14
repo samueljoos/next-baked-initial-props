@@ -1,6 +1,6 @@
 {
   "name": "next-baked-initial-props",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "Running multiple api fetches in getInitialProps can get slow. Sometimes you just want to save the results somewhere and fetch that instead. Next baked initial props gives you the posibility to save/bake your result to your prefered storage (JSON, or your own storage implementation) and fetch the baked data instead of running your slow getInitialProps again and again.",
   "main": "lib/index.js",
   "scripts": {
