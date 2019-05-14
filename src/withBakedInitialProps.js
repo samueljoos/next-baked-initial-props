@@ -1,4 +1,4 @@
-import { onExport, isExported } from "./utils/env";
+import { onExport, isExported } from './utils/env';
 import React from 'react';
 
 const notImplemented = () => {};
@@ -40,9 +40,10 @@ export const withBakedInitialProps = (
         getInitialPropsWhen
     }
 ) => {
-    const BakedInitialPropsPage = (props) => React.createElement(PageComponent, props);
+    const BakedInitialPropsPage = (props) => <PageComponent {...props }/>;
 
-    BakedInitialPropsPage.getInitialProps = async(ctx) => {
+    BakedInitialPropsPage.getInitialProps = async(...params) => {
+        const [ctx] = params;
         const getBakedInitialProps = PageComponent.getBakedInitialProps || notImplemented;
         const bakeInitialProps = PageComponent.bakeInitialProps || notImplemented;
 
@@ -55,7 +56,7 @@ export const withBakedInitialProps = (
         };
 
         if ( options.bakeWhen(defaultBakeWhen(ctx), ctx) || options.getInitialPropsWhen(defaultGetInitialPropsWhen(ctx), ctx) ) {
-            const data = await PageComponent.getInitialProps(ctx);
+            const data = await PageComponent.getInitialProps(...params);
 
             if (options.bakeWhen(defaultBakeWhen(ctx), ctx)) {
                 await bakeInitialProps(data, ctx);
@@ -64,7 +65,7 @@ export const withBakedInitialProps = (
             return data;
         }
 
-        return await getBakedInitialProps(ctx);
+        return await getBakedInitialProps(...params);
     };
 
     return BakedInitialPropsPage;

@@ -26,9 +26,12 @@ export const withJSONBakedInitialProps = (
 
     PageComponent.bakeInitialProps = async(initialPropsData, ctx) => {
         const id = await getBakedInitialPropsIdentifier(ctx);
-        const fs = require('fs-extra');
-        fs.ensureDirSync('out/static/data');
-        fs.writeJSONSync(`out/static/data/${id}.json`, initialPropsData);
+        const fs = require('fs');
+
+        try {
+            await fs.promises.mkdir('out/static/data/', { recursive: true });
+        } catch {}
+        await fs.promises.writeFile(`out/static/data/${id}.json`, JSON.stringify(initialPropsData));
     };
 
     PageComponent.getBakedInitialProps = async(ctx) => {
