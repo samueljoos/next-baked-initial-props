@@ -4,7 +4,7 @@ const defaultBakedInitialPropsIdentifier = (ctx) => {
     if (ctx.asPath === '/') {
         return 'index';
     }
-    return ctx.asPath.split('/').slice(1).join('_').toLowerCase();
+    return ctx.asPath.replace(/^\/|\/$/g, '').replace('/', '-').toLowerCase();
 };
 
 /**

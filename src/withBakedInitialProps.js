@@ -35,11 +35,14 @@ const getInitialPropsWhen = (defaultValue, ctx) => defaultValue;
  */
 export const withBakedInitialProps = (
     PageComponent,
-    options = {
-        bakeWhen,
-        getInitialPropsWhen
-    }
+    options = {}
 ) => {
+    const opts = {
+        bakeWhen,
+        getInitialPropsWhen,
+        ...options
+    };
+
     const BakedInitialPropsPage = (props) => <PageComponent {...props }/>;
 
     BakedInitialPropsPage.getInitialProps = async(...params) => {
@@ -55,10 +58,10 @@ export const withBakedInitialProps = (
             return onExport(ctx);
         };
 
-        if ( options.bakeWhen(defaultBakeWhen(ctx), ctx) || options.getInitialPropsWhen(defaultGetInitialPropsWhen(ctx), ctx) ) {
+        if ( opts.bakeWhen(defaultBakeWhen(ctx), ctx) || opts.getInitialPropsWhen(defaultGetInitialPropsWhen(ctx), ctx) ) {
             const data = await PageComponent.getInitialProps(...params);
 
-            if (options.bakeWhen(defaultBakeWhen(ctx), ctx)) {
+            if (opts.bakeWhen(defaultBakeWhen(ctx), ctx)) {
                 await bakeInitialProps(data, ctx);
             }
 
