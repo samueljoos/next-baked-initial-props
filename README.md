@@ -36,11 +36,11 @@ This mimics the default Identifier for example
 
 ```js
 //Generate a unique identifier for your page data
-Page.defaultBakedInitialPropsIdentifier = (ctx) => {
+Page.getBakedInitialPropsIdentifier = (ctx) => {
     if (ctx.asPath === '/') {
         return 'index';
     }
-    return ctx.asPath.split('/').slice(1).join('_').toLowerCase();
+    return ctx.asPath.replace(/^\/|\/$/g, '').replace('/', '-').toLowerCase();
 };
 ```
 
@@ -66,7 +66,7 @@ Page.getInitialProps = (ctx) => {
 };
 
 //Generate a unique identifier for your page data
-Page.defaultBakedInitialPropsIdentifier = (ctx) => {
+Page.getBakedInitialPropsIdentifier = (ctx) => {
     if (ctx.asPath === '/') {
         return 'index';
     }
@@ -75,7 +75,7 @@ Page.defaultBakedInitialPropsIdentifier = (ctx) => {
 
 //Write the JSON file based on the getInitialProps
 Page.bakeInitialProps = async(initialPropsData, ctx) => {
-    const id = Page.defaultBakedInitialPropsIdentifier(ctx);
+    const id = Page.getBakedInitialPropsIdentifier(ctx);
     const fs = require('fs-extra');
     fs.ensureDirSync('out/static/data');
     fs.writeJSONSync(`out/static/data/${id}.json`, initialPropsData);
@@ -83,7 +83,7 @@ Page.bakeInitialProps = async(initialPropsData, ctx) => {
 
 //Fetch the baked props
 Page.getBakedInitialProps = async(ctx) => {
-    const id = Page.defaultBakedInitialPropsIdentifier(ctx);
+    const id = Page.getBakedInitialPropsIdentifier(ctx);
     const response = await fetch(`/static/data/${id}.json`);
     const data = await response.json();
     return data;
@@ -91,7 +91,6 @@ Page.getBakedInitialProps = async(ctx) => {
 
 // Implement the base HOC
 export default withBakedInitialProps(Page)
-
 ```
 
 ## Override bake triggers.
@@ -105,7 +104,6 @@ By default it return's false after your app is exported. So basicly it would onl
 Example prismic preview implementation:
 
 ```js
-
 // when the prismic cookie exists override the baked data and use the getInitialProps value instead.
 withJSONBakedInitialProps(Page, {
   getInitialPropsWhen: (defaultValue, ctx) => {
@@ -113,5 +111,4 @@ withJSONBakedInitialProps(Page, {
     return defaultValue || onPreview;
   }
 })
-
 ```
