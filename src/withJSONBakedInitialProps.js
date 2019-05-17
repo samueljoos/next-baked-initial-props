@@ -1,10 +1,11 @@
 import { withBakedInitialProps } from './withBakedInitialProps';
 
 const defaultBakedInitialPropsIdentifier = (ctx) => {
-    if (ctx.asPath === '/') {
+    const path = ctx.asPath.split('?')[0];
+    if (path === '/') {
         return 'index';
     }
-    return ctx.asPath.replace(/^\/|\/$/g, '').replace('/', '-').toLowerCase();
+    return path.replace(/^\/|\/$/g, '').replace('/', '-').toLowerCase();
 };
 
 /**
