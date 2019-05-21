@@ -18,6 +18,12 @@
     "core-js": "^3.0.1",
     "react": "^16.8.6"
   },
+  "homepage": "https://github.com/samueljoos/next-baked-initial-props",
+  "bugs": "https://github.com/samueljoos/next-baked-initial-props/issues",
+  "repository": {
+    "type": "git",
+    "url": "github:samueljoos/next-baked-initial-props"
+  },
   "devDependencies": {
     "@babel/cli": "^7.2.3",
     "@babel/core": "^7.4.4",
